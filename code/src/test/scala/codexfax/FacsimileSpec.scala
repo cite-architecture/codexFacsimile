@@ -7,7 +7,7 @@ import edu.holycross.shot.citeobj._
 
 class FacsimileSpec extends FlatSpec {
 
-  val repo = CiteRepositorySource.fromFile("jvm/src/test/resources/p12r.cex")
+  val repo = CiteRepositorySource.fromFile("code/src/test/resources/burney86pages.cex")
 
 
   "A FacsimileBuilder"  should  "do things" in  {

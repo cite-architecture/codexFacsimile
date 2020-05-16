@@ -18,7 +18,7 @@ lazy val code = project.settings(  // your existing library
     "org.wvlet.airframe" %% "airframe-log" % "19.8.10",
 
     "edu.holycross.shot.cite" %% "xcite" % "4.1.1",
-    "edu.holycross.shot.cite" %% "citeobj" % "7.4.0"
+    "edu.holycross.shot" %% "citeobj" % "7.4.0"
 
   )
 )

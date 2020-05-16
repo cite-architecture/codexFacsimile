@@ -1,0 +1,1 @@
+The `guide` subdirectory has the markdown source for a user's guide that is built with `mdoc`.  Fenced code blocks are executed and markdown is formatted, with the results written to the `docs` directory for serving with github pages.

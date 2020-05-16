@@ -8,11 +8,11 @@ urn:cite2:hmt:burney86pages.v1:#Burney 86 manuscript#urn:cite2:hmt:burney86pages
 
 #!citeproperties
 Property#Label#Type#Authority list
-urn:cite2:hmt:msA.v1.sequence:#Page sequence#Number#
-urn:cite2:hmt:msA.v1.image:#TBS image#Cite2Urn#
-urn:cite2:hmt:msA.v1.urn:#URN#Cite2Urn#
-urn:cite2:hmt:msA.v1.rv:#Recto or Verso#String#recto,verso
-urn:cite2:hmt:msA.v1.label:#Label#String#
+urn:cite2:hmt:burney86pages.v1.sequence:#Page sequence#Number#
+urn:cite2:hmt:burney86pages.v1.image:#TBS image#Cite2Urn#
+urn:cite2:hmt:burney86pages.v1.urn:#URN#Cite2Urn#
+urn:cite2:hmt:burney86pages.v1.rv:#Recto or Verso#String#recto,verso
+urn:cite2:hmt:burney86pages.v1.label:#Label#String#
 
 
 #!citedata

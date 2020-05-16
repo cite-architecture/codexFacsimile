@@ -4,8 +4,8 @@
 // Airframe logging only for >= 2.12
 lazy val supportedScalaVersions = List("2.12.4") //List("2.11.8", "2.12.4")
 
-lazy val rootProject = project.settings(  // your existing library
-  name := "codexFacsimile",
+lazy val code = project.settings(  // your existing library
+  name := "codexfax",
   organization := "edu.holycross.shot",
   version := "0.0.1",
   licenses += ("GPL-3.0",
@@ -21,11 +21,11 @@ lazy val rootProject = project.settings(  // your existing library
 )
 
 lazy val docs = project       // new documentation project
-  .in(file("mdocs")) // important: it must not be docs/
-  .dependsOn(rootProject)
+  .in(file("mdocsrc")) // important: it must not be docs/
+  .dependsOn(code)
   .enablePlugins(MdocPlugin)
   .settings(
-    mdocIn := file("guide"),
+    mdocIn := file("mdocs/guide"),
     mdocOut := file("docs")
   )
 

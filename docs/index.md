@@ -14,3 +14,10 @@ Features:
 - visual table of contents (thumbnail images linked to facsimile page)
 - navigation (prev/next)
 - facimile images linked to an installation of the Homer Multitext project's Image Citation Tool
+
+
+Configuration: TBA
+
+- URL to image citation tool
+- size of thumbnail images in table of contents
+- number of thumbnails in row of table of contents

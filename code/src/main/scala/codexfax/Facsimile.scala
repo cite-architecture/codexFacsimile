@@ -8,7 +8,10 @@ import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 
-case class Facsimile (pages: Vector[CiteObject])  {
+case class Facsimile (
+  pages: Vector[CiteObject],
+  ictBase: String = "http://www.homermultitext.org/ict2/?"
+)  {
 
   // These are defined in the Codex Model:
   /*
@@ -19,12 +22,25 @@ case class Facsimile (pages: Vector[CiteObject])  {
   urn:cite2:hmt:burney86pages.v1.label:#Label#String#
   */
 
+  /** Select image URN property required by codex model.
+  * If no image for this surface, return None.
+  *
+  * @param cobj Record to extract image URN from.
+  */
   def image(cobj: CiteObject): Option[Cite2Urn] = {
     def imgUrn: Cite2Urn = cobj.urn.addProperty("image")
     cobj.propertyValue(imgUrn) match {
       case img: Cite2Urn => Some(img)
       case _ => None
     }
+  }
+
+  /** Select surface identifer from URN.
+  *
+  * @param cobj Record to extract image URN from.
+  */
+  def pageId(cobj: CiteObject): String = {
+    cobj.urn.objectComponent
   }
 
   /** Format title page for entire facsimile edition.*/
@@ -48,7 +64,14 @@ case class Facsimile (pages: Vector[CiteObject])  {
   * @param next Link to next page.  Empty String if this is last surface.
   */
   def page(cobj: CiteObject, prev: String, next: String) : String = {
-    "Markdown page for a single object"
+    val yaml = s"---\nlayout: page\ntitle: ${cobj.label}\n---\n\n"
+    val p = if (prev.isEmpty) { "-" } else { s"[${prev}](${prev}/)"}
+    val n = if (next.isEmpty ) { "-" } else { s"[${next}](${next}/)"}
+    val pn = s"previous:  ${p} | next: ${n}"
+    // CHECK FOR NONE!
+    val zoom = ictBase + "urn=" + image(cobj)
+    val linkedImage = s"[ZOom](${zoom})"
+    yaml + s"${cobj.label}\n\n${linkedImage} \n\n---\n\n" + pn
   }
 
 
@@ -59,11 +82,11 @@ case class Facsimile (pages: Vector[CiteObject])  {
   def edition(dirName: String, thumbWidth: Int = 100, columns : Int = 6) : Unit = {
     new java.io.PrintWriter(dirName + "/index.md" ){write(titlePage);close;}
     new java.io.PrintWriter(dirName + "/toc.md" ){write(toc(thumbWidth, columns));close;}
-    for (pg <- pages) {
-      val prev = if (pg == pages.head) { ""  } else { "Computed prev"}
-      val nxt = if (pg == pages.last) {""} else {"Computed next"}
-
-      //new java.io.PrintWriter(){ write(page(pg, prev, nxt))); close; }
+    for ((pg,idx) <- pages.zipWithIndex) {
+      val prev = if (idx == 0) { ""  } else { pageId(pages(idx - 1))}
+      val nxt = if (idx == (pages.size -1)) {""} else { pageId(pages(idx + 1)) }
+      val fName = dirName + "/" + pageId(pg) + ".md"
+      new java.io.PrintWriter(fName){ write(page(pg, prev, nxt)); close; }
     }
 
   }

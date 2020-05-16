@@ -21,6 +21,12 @@ class FacsimileSpec extends FlatSpec {
     assert(facsimile.image(record).get == expected)
   }
 
+  it should "find the surface identifier for a record"in {
+    val record = pages(0)
+    val expected = "1r"
+    assert(facsimile.pageId(record) == expected)
+  }
+
   it should "write a complete edition to a specified directory" in {
     val facsimile = Facsimile(pages)
     facsimile.edition("testout")

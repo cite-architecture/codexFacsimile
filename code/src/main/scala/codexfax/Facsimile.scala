@@ -1,5 +1,6 @@
 package edu.holycross.shot.codexfax
 
+import edu.holycross.shot.cite._
 import edu.holycross.shot.citeobj._
 import java.io.PrintWriter
 

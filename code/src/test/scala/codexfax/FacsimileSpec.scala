@@ -32,7 +32,7 @@ class FacsimileSpec extends FlatSpec {
 
   it should "format a linked image for a page" in {
     val record = pages(0)
-    println("IMAGE: " + facsimile.imageLink(record))
+    println("IMAGE: " + facsimile.imageLink(record, 500))
   }
 
   it should "return an appropriate message if no image exists for a page" in pending

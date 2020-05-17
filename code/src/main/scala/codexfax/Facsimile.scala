@@ -10,6 +10,15 @@ import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 
+/** Physical facsimile for a sequence of pages implementing
+* the CITE architecture's model of an illustrated codex.
+*
+* @param pages Ordered sequence of pages.
+* @param ictBase Location of Image Citation Tool.
+* @param iiifBase Base URL for an IIIF image service.
+* @param pathBase Base path for image collections further organized
+* by URN structure on the IIIF service host.
+*/
 case class Facsimile (
   pages: Vector[CiteObject],
   ictBase: String = "http://www.homermultitext.org/ict2/?",
@@ -17,14 +26,6 @@ case class Facsimile (
   pathBase: String = "/project/homer/pyramidal/deepzoom/"
   ) {
 
-  // These are defined in the Codex Model:
-  /*
-  urn:cite2:hmt:burney86pages.v1.sequence:#Page sequence#Number#
-  urn:cite2:hmt:burney86pages.v1.image:#TBS image#Cite2Urn#
-  urn:cite2:hmt:burney86pages.v1.urn:#URN#Cite2Urn#
-  urn:cite2:hmt:burney86pages.v1.rv:#Recto or Verso#String#recto,verso,bifolio
-  urn:cite2:hmt:burney86pages.v1.label:#Label#String#
-  */
 
   /** Select image URN property required by codex model.
   * If no image for this surface, return None.
@@ -74,22 +75,27 @@ case class Facsimile (
     val n = if (next.isEmpty ) { "-" } else { s"[${next}](${next}/)"}
     val pn = s"previous:  ${p} | next: ${n}"
 
-    yaml + s"${cobj.label}\n\n${imageLink(cobj)} \n\n---\n\n" + pn
+    yaml + s"${cobj.label}\n\n${imageLink(cobj, imgWidth)} \n\n---\n\n" + pn
   }
 
-def imageMarkdown(img: Cite2Urn, w: Int): String = {
-  /// http://www.homermultitext.org/iipsrv?
-  val iiifPath = pathBase + PathUtility.expandedPath(img)
-  val iiif = IIIFApi(iiifBase, iiifPath)
-  iiif.serviceRequest(img, width = Some(w))
-}
+  /** Constructs mardown for an embedded image of a given width.
+  *
+  * @param img URN of image to display.
+  * @param w Width in pixels of the display.
+  */
+  def imageMarkdown(img: Cite2Urn, w: Int): String = {
+    val iiifPath = pathBase + PathUtility.expandedPath(img)
+    val iiif = IIIFApi(iiifBase, iiifPath)
+    iiif.serviceRequest(img, width = Some(w))
+  }
 
-def imageLink(cobj: CiteObject): String = {
+def imageLink(cobj: CiteObject, w: Int): String = {
   image(cobj) match {
 
     case Some(u) => {
+      val embeddedImg = imageMarkdown(u, w)
       val zoom = ictBase + "urn=" + u
-      s"[Zoom](${zoom})"
+      s"[![${u.objectComponent}](${embeddedImg})](${zoom})"
     }
 
     case _ => "No image available for " + cobj.urn
@@ -103,6 +109,7 @@ def imageLink(cobj: CiteObject): String = {
   *
   * @param dirName Name of output directory, as a String.
   */
+
   def edition(dirName: String, imgWidth: Int = 800, thumbWidth: Int = 100, columns : Int = 6) : Unit = {
     new java.io.PrintWriter(dirName + "/index.md" ){write(titlePage);close;}
     new java.io.PrintWriter(dirName + "/toc.md" ){write(toc(thumbWidth, columns));close;}

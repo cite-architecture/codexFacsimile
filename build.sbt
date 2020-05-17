@@ -7,7 +7,7 @@ lazy val supportedScalaVersions = List("2.12.4") //List("2.11.8", "2.12.4")
 lazy val code = project.settings(  // your existing library
   name := "codexfax",
   organization := "edu.holycross.shot",
-  version := "1.0.0",
+  version := "1.1.0",
   licenses += ("GPL-3.0",
     url("https://opensource.org/licenses/gpl-3.0.html")),
   resolvers += Resolver.jcenterRepo,
@@ -17,7 +17,7 @@ lazy val code = project.settings(  // your existing library
     "org.scalatest" %% "scalatest" % "3.0.1" % "test",
     "org.wvlet.airframe" %% "airframe-log" % "19.8.10",
 
-    "edu.holycross.shot.cite" %% "xcite" % "4.1.1",
+    "edu.holycross.shot.cite" %% "xcite" % "4.2.0",
     "edu.holycross.shot" %% "citeobj" % "7.4.0",
     "edu.holycross.shot" %% "citebinaryimage" % "3.1.1"
 
@@ -32,7 +32,3 @@ lazy val docs = project       // new documentation project
     mdocIn := file("mdocs/guide"),
     mdocOut := file("docs")
   )
-
-/*
-
-    */

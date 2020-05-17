@@ -5,6 +5,7 @@ import edu.holycross.shot.citeobj._
 import edu.holycross.shot.citebinaryimage._
 
 import java.io.PrintWriter
+import java.io.File
 
 import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
@@ -100,7 +101,6 @@ case class Facsimile (
 
     val mdRows = rows.map(row => "| " + row.mkString(" |"))
 
-
     val tableHdr = for (i <- 1 to columns) yield {
       "| ------------- "
     }
@@ -166,11 +166,16 @@ case class Facsimile (
 
   def edition(dirName: String, imgWidth: Int = 800, thumbWidth: Int = 100, columns : Int = 6) : Unit = {
     new java.io.PrintWriter(dirName + "/index.md" ){write(titlePage);close;}
-    new java.io.PrintWriter(dirName + "/toc.md" ){write(toc(thumbWidth, columns));close;}
+    val tocDir = new java.io.File(dirName + "/toc").mkdirs
+
+
+    new java.io.PrintWriter(dirName + "/toc/index.md" ){write(toc(thumbWidth, columns));close;}
     for ((pg,idx) <- pages.zipWithIndex) {
       val prev = if (idx == 0) { ""  } else { pageId(pages(idx - 1))}
       val nxt = if (idx == (pages.size -1)) {""} else { pageId(pages(idx + 1)) }
-      val fName = dirName + "/" + pageId(pg) + ".md"
+
+      val pageDir = new java.io.File(dirName + "/" +  pageId(pg)).mkdirs
+      val fName = dirName + "/" + pageId(pg) + "/index.md"
       new java.io.PrintWriter(fName){ write(page(pg, imgWidth, prev, nxt)); close; }
     }
 

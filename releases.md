@@ -1,5 +1,7 @@
 # Codex facsimile library: release notes
 
+**1.2.1**: ensure correct linking from ToC in some jekyll installations.
+
 **1.2.0**: adds citation information to page display.
 
 **1.1.0**: updates library dependencies.

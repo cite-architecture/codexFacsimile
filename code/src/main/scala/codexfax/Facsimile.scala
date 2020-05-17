@@ -71,8 +71,8 @@ case class Facsimile (
   def page(cobj: CiteObject, imgWidth: Int, prev: String, next: String) : String = {
     val yaml = s"---\nlayout: page\ntitle: ${cobj.label}\n---\n\n"
 
-    val p = if (prev.isEmpty) { "-" } else { s"[${prev}](${prev}/)"}
-    val n = if (next.isEmpty ) { "-" } else { s"[${next}](${next}/)"}
+    val p = if (prev.isEmpty) { "-" } else { s"[${prev}](../${prev}/)"}
+    val n = if (next.isEmpty ) { "-" } else { s"[${next}](../${next}/)"}
     val pn = s"previous:  ${p} | next: ${n}"
 
     yaml + s"${cobj.label}\n\n${imageLink(cobj, imgWidth)} \n\n---\n\n" + pn

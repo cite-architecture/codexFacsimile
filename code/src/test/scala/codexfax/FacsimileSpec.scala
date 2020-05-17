@@ -17,9 +17,25 @@ class FacsimileSpec extends FlatSpec {
   // then match on result
   "A Facsimile"  should  "extract an Image URN from a record" in {
     val record = pages(0)
-    val expected = Cite2Urn("urn:cite2:hmt:burney86img.v1:burney_ms_86_f001r")
+    val expected = Cite2Urn("urn:cite2:bl:burney86imgs.v1:burney_ms_86_f001r")
     assert(facsimile.image(record).get == expected)
   }
+
+  it should "construct a markdown reference to a binary image" in {
+    val record = pages(0)
+    val img = facsimile.image(record).get
+    val imgSize = 100
+    val actual = facsimile.imageMarkdown(img, imgSize)
+    val expected = s"http://www.homermultitext.org/iipsrv?IIIF=/project/homer/pyramidal/deepzoom/bl/burney86imgs/v1/burney_ms_86_f001r.tif/full/${imgSize},/0/default.jpg"
+    assert(actual == expected)
+  }
+
+  it should "format a linked image for a page" in {
+    val record = pages(0)
+    println("IMAGE: " + facsimile.imageLink(record))
+  }
+
+  it should "return an appropriate message if no image exists for a page" in pending
 
   it should "find the surface identifier for a record"in {
     val record = pages(0)

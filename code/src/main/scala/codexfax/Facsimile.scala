@@ -2,6 +2,8 @@ package edu.holycross.shot.codexfax
 
 import edu.holycross.shot.cite._
 import edu.holycross.shot.citeobj._
+import edu.holycross.shot.citebinaryimage._
+
 import java.io.PrintWriter
 
 import wvlet.log._
@@ -10,8 +12,10 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 case class Facsimile (
   pages: Vector[CiteObject],
-  ictBase: String = "http://www.homermultitext.org/ict2/?"
-)  {
+  ictBase: String = "http://www.homermultitext.org/ict2/?",
+  iiifBase:  String = "http://www.homermultitext.org/iipsrv?",
+  pathBase: String = "/project/homer/pyramidal/deepzoom/"
+  ) {
 
   // These are defined in the Codex Model:
   /*
@@ -63,30 +67,50 @@ case class Facsimile (
   * @param prev Link to previous page.  Empty String if this is first surface.
   * @param next Link to next page.  Empty String if this is last surface.
   */
-  def page(cobj: CiteObject, prev: String, next: String) : String = {
+  def page(cobj: CiteObject, imgWidth: Int, prev: String, next: String) : String = {
     val yaml = s"---\nlayout: page\ntitle: ${cobj.label}\n---\n\n"
+
     val p = if (prev.isEmpty) { "-" } else { s"[${prev}](${prev}/)"}
     val n = if (next.isEmpty ) { "-" } else { s"[${next}](${next}/)"}
     val pn = s"previous:  ${p} | next: ${n}"
-    // CHECK FOR NONE!
-    val zoom = ictBase + "urn=" + image(cobj)
-    val linkedImage = s"[ZOom](${zoom})"
-    yaml + s"${cobj.label}\n\n${linkedImage} \n\n---\n\n" + pn
+
+    yaml + s"${cobj.label}\n\n${imageLink(cobj)} \n\n---\n\n" + pn
   }
+
+def imageMarkdown(img: Cite2Urn, w: Int): String = {
+  /// http://www.homermultitext.org/iipsrv?
+  val iiifPath = pathBase + PathUtility.expandedPath(img)
+  val iiif = IIIFApi(iiifBase, iiifPath)
+  iiif.serviceRequest(img, width = Some(w))
+}
+
+def imageLink(cobj: CiteObject): String = {
+  image(cobj) match {
+
+    case Some(u) => {
+      val zoom = ictBase + "urn=" + u
+      s"[Zoom](${zoom})"
+    }
+
+    case _ => "No image available for " + cobj.urn
+  }
+}
+
+
 
 
   /** Write complete markdown facsimile edition to a named directory.
   *
   * @param dirName Name of output directory, as a String.
   */
-  def edition(dirName: String, thumbWidth: Int = 100, columns : Int = 6) : Unit = {
+  def edition(dirName: String, imgWidth: Int = 800, thumbWidth: Int = 100, columns : Int = 6) : Unit = {
     new java.io.PrintWriter(dirName + "/index.md" ){write(titlePage);close;}
     new java.io.PrintWriter(dirName + "/toc.md" ){write(toc(thumbWidth, columns));close;}
     for ((pg,idx) <- pages.zipWithIndex) {
       val prev = if (idx == 0) { ""  } else { pageId(pages(idx - 1))}
       val nxt = if (idx == (pages.size -1)) {""} else { pageId(pages(idx + 1)) }
       val fName = dirName + "/" + pageId(pg) + ".md"
-      new java.io.PrintWriter(fName){ write(page(pg, prev, nxt)); close; }
+      new java.io.PrintWriter(fName){ write(page(pg, imgWidth, prev, nxt)); close; }
     }
 
   }

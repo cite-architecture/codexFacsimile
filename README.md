@@ -1,2 +1,14 @@
-# codexFacsimile
-Use collections implementing the codex model to build facsimiles as simple markdown pages
+# Codex facsimile library
+
+## What it is
+
+Use collections implementing the codex model to build facsimiles as simple markdown pages.
+
+## Current version:  1.0.0
+
+Status: **active development**. [Release notes](releases.md).
+
+
+## License
+
+[GPL 3.0](https://opensource.org/licenses/gpl-3.0.html).

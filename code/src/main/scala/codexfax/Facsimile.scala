@@ -14,6 +14,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 * the CITE architecture's model of an illustrated codex.
 *
 * @param pages Ordered sequence of pages.
+* @param label Label for manuscript.
 * @param ictBase Location of Image Citation Tool.
 * @param iiifBase Base URL for an IIIF image service.
 * @param pathBase Base path for image collections further organized
@@ -21,6 +22,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 */
 case class Facsimile (
   pages: Vector[CiteObject],
+  label: String,
   ictBase: String = "http://www.homermultitext.org/ict2/?",
   iiifBase:  String = "http://www.homermultitext.org/iipsrv?",
   pathBase: String = "/project/homer/pyramidal/deepzoom/"
@@ -50,7 +52,25 @@ case class Facsimile (
 
   /** Format title page for entire facsimile edition.*/
   def titlePage: String = {
-    "Markdown string for an index.md page"
+    val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
+
+
+    val pgIds = pages.map(_.urn.objectComponent)
+    val pageLinks = pgIds.map(pg => {
+      "<option value=\"./" + pg + "/\">" + pg + "</option>"
+    })
+
+    val options = """<option select="selected">-</option>""" + pageLinks
+
+
+
+    val selectIntro = """<select id="selectbox" name="" onchange="javascript:location.href = this.value;">"""
+
+    val sel = selectIntro + options + "</select>"
+
+    yaml + s"\n\n" + """See a visual [table of contents]("../toc/")""" + "\n\nView page:\n\n" + sel
+
+
   }
 
   /** Format table of contents page with thumbnails.
@@ -59,7 +79,11 @@ case class Facsimile (
   * @param columns Number of thumbnails to include in each row.
   */
   def toc(thumbWidth: Int = 100, columns : Int = 6): String = {
-    "Markdown page for a visual table of contents with thumbnails"
+    val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
+
+
+    yaml + "Markdown for thumbnails"
+
   }
 
   /** Format a single page with facsimile view in markdown.
@@ -89,18 +113,25 @@ case class Facsimile (
     iiif.serviceRequest(img, width = Some(w))
   }
 
-def imageLink(cobj: CiteObject, w: Int): String = {
-  image(cobj) match {
 
-    case Some(u) => {
-      val embeddedImg = imageMarkdown(u, w)
-      val zoom = ictBase + "urn=" + u
-      s"[![${u.objectComponent}](${embeddedImg})](${zoom})"
+  /** Compose markdown for embedded image linked to
+  * Image Citation Tool.
+  *
+  * @param cobj Page to display image for.
+  * @param w Width in pixels to display image.
+  */
+  def imageLink(cobj: CiteObject, w: Int): String = {
+    image(cobj) match {
+
+      case Some(u) => {
+        val embeddedImg = imageMarkdown(u, w)
+        val zoom = ictBase + "urn=" + u
+        s"[![${u.objectComponent}](${embeddedImg})](${zoom})"
+      }
+
+      case _ => "No image available for " + cobj.urn
     }
-
-    case _ => "No image available for " + cobj.urn
   }
-}
 
 
 

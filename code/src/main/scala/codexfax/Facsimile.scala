@@ -68,7 +68,7 @@ case class Facsimile (
 
     val sel = selectIntro + options + "</select>"
 
-    yaml + s"\n\n" + """See a visual [table of contents]("../toc/")""" + "\n\nView page:\n\n" + sel
+    yaml + "\n\nSee a [visual table of contents](./toc/)" + "\n\nView page:\n\n" + sel
 
 
   }

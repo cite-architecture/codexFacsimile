@@ -73,6 +73,20 @@ case class Facsimile (
 
   }
 
+
+  def thumbLink(cobj: CiteObject, w: Int): String = {
+    val pg = "../" + cobj.urn.objectComponent + "/"
+    image(cobj) match {
+
+      case Some(u) => {
+        val embeddedImg = imageMarkdown(u, w)
+
+        s"[![${pg}](${embeddedImg})${cobj.urn.objectComponent}](${pg})"
+      }
+
+      case _ => s"[${cobj.label}](${pg})" + " No image available."
+    }
+  }
   /** Format table of contents page with thumbnails.
   *
   * @param thumbWidth Width of thumbnail images in pixels.
@@ -82,7 +96,7 @@ case class Facsimile (
     val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
 
     val grouped = pages.sliding(6).toVector
-    val rows = grouped.map ( row => row.map(pg => imageLink(pg, thumbWidth)))
+    val rows = grouped.map ( row => row.map(pg => thumbLink(pg, thumbWidth)))
 
     val mdRows = rows.map(row => "| " + row.mkString(" |"))
 

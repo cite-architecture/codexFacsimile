@@ -45,6 +45,7 @@ class FacsimileSpec extends FlatSpec {
     assert(facsimile.pageId(record) == expected)
   }
 
+
   it should "write a complete edition to a specified directory" in {
     facsimile.edition("testout")
   }

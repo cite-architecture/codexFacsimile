@@ -81,9 +81,18 @@ case class Facsimile (
   def toc(thumbWidth: Int = 100, columns : Int = 6): String = {
     val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
 
+    val grouped = pages.sliding(6).toVector
+    val rows = grouped.map ( row => row.map(pg => imageLink(pg, thumbWidth)))
 
-    yaml + "Markdown for thumbnails"
+    val mdRows = rows.map(row => "| " + row.mkString(" |"))
 
+
+    val tableHdr = for (i <- 1 to columns) yield {
+      "| ------------- "
+    }
+
+
+    yaml + "Markdown for thumbnails\n\n" + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
   }
 
   /** Format a single page with facsimile view in markdown.
@@ -114,6 +123,7 @@ case class Facsimile (
   }
 
 
+
   /** Compose markdown for embedded image linked to
   * Image Citation Tool.
   *
@@ -129,7 +139,7 @@ case class Facsimile (
         s"[![${u.objectComponent}](${embeddedImg})](${zoom})"
       }
 
-      case _ => "No image available for " + cobj.urn
+      case _ => cobj.label + " No image available."
     }
   }
 

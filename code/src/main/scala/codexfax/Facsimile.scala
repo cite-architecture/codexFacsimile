@@ -54,7 +54,6 @@ case class Facsimile (
   def titlePage: String = {
     val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
 
-
     val pgIds = pages.map(_.urn.objectComponent)
     val pageLinks = pgIds.map(pg => {
       "<option value=\"./" + pg + "/\">" + pg + "</option>"
@@ -62,18 +61,18 @@ case class Facsimile (
 
     val options = """<option select="selected">-</option>""" + pageLinks
 
-
-
     val selectIntro = """<select id="selectbox" name="" onchange="javascript:location.href = this.value;">"""
+    val select = selectIntro + options + "</select>"
 
-    val sel = selectIntro + options + "</select>"
-
-    yaml + "\n\nSee a [visual table of contents](./toc/)" + "\n\nView page:\n\n" + sel
-
-
+    yaml + "\n\nSee a [visual table of contents](./toc/)" + "\n\nView page:\n\n" + select
   }
 
 
+  /** Format thumbnail image with link to page.
+  *
+  * @param cobj Record for page.
+  * @param w Width in pixels to make thumbnail image.
+  */
   def thumbLink(cobj: CiteObject, w: Int): String = {
     val pg = "../" + cobj.urn.objectComponent + "/"
     image(cobj) match {
@@ -87,6 +86,7 @@ case class Facsimile (
       case _ => s"[${cobj.label}](${pg})" + " No image available."
     }
   }
+
   /** Format table of contents page with thumbnails.
   *
   * @param thumbWidth Width of thumbnail images in pixels.
@@ -105,7 +105,6 @@ case class Facsimile (
       "| ------------- "
     }
 
-
     yaml + "Markdown for thumbnails\n\n" + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
   }
 
@@ -117,12 +116,12 @@ case class Facsimile (
   */
   def page(cobj: CiteObject, imgWidth: Int, prev: String, next: String) : String = {
     val yaml = s"---\nlayout: page\ntitle: ${cobj.label}\n---\n\n"
-
+    val urn = s"Cite this object as `${cobj.urn}`.  The full image is linked to a citation tool you can use to cite regions of the image."
     val p = if (prev.isEmpty) { "-" } else { s"[${prev}](../${prev}/)"}
     val n = if (next.isEmpty ) { "-" } else { s"[${next}](../${next}/)"}
     val pn = s"previous:  ${p} | next: ${n}"
 
-    yaml + s"${cobj.label}\n\n${imageLink(cobj, imgWidth)} \n\n---\n\n" + pn
+    yaml + s"${cobj.label}\n\n${urn}\n\n${imageLink(cobj, imgWidth)} \n\n---\n\n" + pn
   }
 
   /** Constructs mardown for an embedded image of a given width.

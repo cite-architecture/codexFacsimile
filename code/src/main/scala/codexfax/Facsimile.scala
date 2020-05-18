@@ -142,9 +142,7 @@ case class Facsimile (
     val urn = s"Cite this object as `${cobj.urn}`.  The full image is linked to a citation tool you can use to cite regions of the image."
     val p = if (prev.isEmpty) { "-" } else { s"[${prev}](../${prev}/)"}
     val n = if (next.isEmpty ) { "-" } else { s"[${next}](../${next}/)"}
-    val pn = "<p style=\"text-align: center\">previous:  " + p + s" | next: ${n}</p>"
-
-
+    val pn = s"previous: ${p} | next: ${n}"
     val imgRights = "<p style=\"text-align: center; font-style: italic;\">" + rights(cobj) + "</p>"
     yaml + s"${cobj.label}\n\n${urn}\n\n${imageLink(cobj, imgWidth)} \n\n${imgRights}\n\n---\n\n" + pn
   }

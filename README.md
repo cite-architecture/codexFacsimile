@@ -4,7 +4,7 @@
 
 Use collections implementing the codex model to build facsimiles as simple markdown pages.
 
-## Current version:  2.0.0
+## Current version:  2.0.1
 
 Status: **active development**. [Release notes](releases.md).
 

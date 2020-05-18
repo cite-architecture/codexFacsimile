@@ -1,5 +1,7 @@
 # Codex facsimile library: release notes
 
+**2.0.1**: Fix a markdown formatting error.
+
 **2.0.0**: API-breaking change to work from a `CiteCollectionRepository` in order to have access to full image data as well as full data for codex collection.
 
 **1.2.1**: ensure correct linking from ToC in some jekyll installations.

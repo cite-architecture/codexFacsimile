@@ -14,21 +14,26 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 /** Physical facsimile for a sequence of pages implementing
 * the CITE architecture's model of an illustrated codex.
 *
-* @param pages Ordered sequence of pages.
-* @param label Label for manuscript.
+* @param repo Cite Object repository with data.
+* @param urn URN of collection implementing the codex model.
 * @param ictBase Location of Image Citation Tool.
 * @param iiifBase Base URL for an IIIF image service.
 * @param pathBase Base path for image collections further organized
 * by URN structure on the IIIF service host.
 */
 case class Facsimile (
-  pages: Vector[CiteObject],
-  label: String,
+  repo: CiteCollectionRepository,
+  urn: Cite2Urn,
   ictBase: String = "http://www.homermultitext.org/ict2/?",
   iiifBase:  String = "http://www.homermultitext.org/iipsrv?",
   pathBase: String = "/project/homer/pyramidal/deepzoom/"
-  ) {
+) extends LogSupport {
 
+  /** Collect Vector of page objects. */
+  def pages = repo.objectsForCollection(urn)
+
+  /** Labelling String for collection.*/
+  def label =  repo.catalog.collection(urn).get.collectionLabel
 
   /** Select image URN property required by codex model.
   * If no image for this surface, return None.
@@ -41,6 +46,25 @@ case class Facsimile (
       case img: Cite2Urn => Some(img)
       case _ => None
     }
+  }
+
+  /** Extract rights statement for page record's image.
+  *
+  * @param record CiteObject recording a page in the codex.
+  */
+  def rights(record: CiteObject) : String = {
+    val imgOpt = record.propertyValue(record.urn.addProperty("image")) match {
+      case img: Cite2Urn => Some(img)
+      case _ => None
+    }
+    val imgUrn = imgOpt.get
+    debug("imgOpt is " + imgOpt)
+    debug("So get that as " + imgUrn )
+    val imgObj = repo.citableObject(imgUrn)
+    debug("Ad retreive its object " + imgObj)
+
+    val rightsProp : Cite2Urn = imgUrn.addProperty("rights")
+    imgObj.propertyValue(rightsProp).toString
   }
 
   /** Select surface identifer from URN.
@@ -67,7 +91,6 @@ case class Facsimile (
 
     yaml + "\n\nSee a [visual table of contents](./toc/)" + "\n\nView page:\n\n" + select
   }
-
 
   /** Format thumbnail image with link to page.
   *
@@ -114,17 +137,19 @@ case class Facsimile (
   * @param prev Link to previous page.  Empty String if this is first surface.
   * @param next Link to next page.  Empty String if this is last surface.
   */
-  def page(cobj: CiteObject, imgWidth: Int, prev: String, next: String) : String = {
+  def pageMarkdown(cobj: CiteObject, imgWidth: Int, prev: String, next: String) : String = {
     val yaml = s"---\nlayout: page\ntitle: ${cobj.label}\n---\n\n"
     val urn = s"Cite this object as `${cobj.urn}`.  The full image is linked to a citation tool you can use to cite regions of the image."
     val p = if (prev.isEmpty) { "-" } else { s"[${prev}](../${prev}/)"}
     val n = if (next.isEmpty ) { "-" } else { s"[${next}](../${next}/)"}
-    val pn = s"previous:  ${p} | next: ${n}"
+    val pn = "<p style=\"text-align: center\">previous:  " + p + s" | next: ${n}</p>"
 
-    yaml + s"${cobj.label}\n\n${urn}\n\n${imageLink(cobj, imgWidth)} \n\n---\n\n" + pn
+
+    val imgRights = "<p style=\"text-align: center; font-style: italic;\">" + rights(cobj) + "</p>"
+    yaml + s"${cobj.label}\n\n${urn}\n\n${imageLink(cobj, imgWidth)} \n\n${imgRights}\n\n---\n\n" + pn
   }
 
-  /** Constructs mardown for an embedded image of a given width.
+  /** Constructs markdown for an embedded image of a given width.
   *
   * @param img URN of image to display.
   * @param w Width in pixels of the display.
@@ -134,8 +159,6 @@ case class Facsimile (
     val iiif = IIIFApi(iiifBase, iiifPath)
     iiif.serviceRequest(img, width = Some(w))
   }
-
-
 
   /** Compose markdown for embedded image linked to
   * Image Citation Tool.
@@ -156,18 +179,13 @@ case class Facsimile (
     }
   }
 
-
-
-
   /** Write complete markdown facsimile edition to a named directory.
   *
   * @param dirName Name of output directory, as a String.
   */
-
   def edition(dirName: String, imgWidth: Int = 800, thumbWidth: Int = 100, columns : Int = 6) : Unit = {
     new java.io.PrintWriter(dirName + "/index.md" ){write(titlePage);close;}
     val tocDir = new java.io.File(dirName + "/toc").mkdirs
-
 
     new java.io.PrintWriter(dirName + "/toc/index.md" ){write(toc(thumbWidth, columns));close;}
     for ((pg,idx) <- pages.zipWithIndex) {
@@ -176,11 +194,8 @@ case class Facsimile (
 
       val pageDir = new java.io.File(dirName + "/" +  pageId(pg)).mkdirs
       val fName = dirName + "/" + pageId(pg) + "/index.md"
-      new java.io.PrintWriter(fName){ write(page(pg, imgWidth, prev, nxt)); close; }
+      new java.io.PrintWriter(fName){ write(pageMarkdown(pg, imgWidth, prev, nxt)); close; }
     }
-
   }
-
-
 
 }

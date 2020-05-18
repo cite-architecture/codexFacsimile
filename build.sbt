@@ -7,7 +7,7 @@ lazy val supportedScalaVersions = List("2.12.4") //List("2.11.8", "2.12.4")
 lazy val code = project.settings(  // your existing library
   name := "codexfax",
   organization := "edu.holycross.shot",
-  version := "1.2.1",
+  version := "2.0.0",
   licenses += ("GPL-3.0",
     url("https://opensource.org/licenses/gpl-3.0.html")),
   resolvers += Resolver.jcenterRepo,

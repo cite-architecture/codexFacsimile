@@ -1,6 +1,8 @@
 # Codex facsimile library: release notes
 
-**2.0.1**: Fix a markdown formatting error.
+**2.0.2**: fixes a bug in layout of visual table of contents.
+
+**2.0.1**: fixes a markdown formatting error.
 
 **2.0.0**: API-breaking change to work from a `CiteCollectionRepository` in order to have access to full image data as well as full data for codex collection.
 

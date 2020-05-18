@@ -119,7 +119,7 @@ case class Facsimile (
   def toc(thumbWidth: Int = 100, columns : Int = 6): String = {
     val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
 
-    val grouped = pages.sliding(6).toVector
+    val grouped = pages.sliding(6, 6).toVector
     val rows = grouped.map ( row => row.map(pg => thumbLink(pg, thumbWidth)))
 
     val mdRows = rows.map(row => "| " + row.mkString(" |"))

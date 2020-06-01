@@ -7,7 +7,7 @@ import edu.holycross.shot.citeobj._
 
 class FacsimileSpec extends FlatSpec {
 
-  val repo = CiteRepositorySource.fromFile("code/src/test/resources/b86-all.cex")
+  val repo = CiteRepositorySource.fromFile("shared/src/test/resources/b86-all.cex")
   val burney86urn = Cite2Urn("urn:cite2:citebl:burney86pages.v1:")
   //val pages = repo.objectsForCollection(burney86urn)
 

@@ -58,13 +58,22 @@ case class Facsimile (
       case _ => None
     }
     val imgUrn = imgOpt.get
-    debug("imgOpt is " + imgOpt)
-    debug("So get that as " + imgUrn )
-    val imgObj = repo.citableObject(imgUrn)
-    debug("Ad retreive its object " + imgObj)
 
-    val rightsProp : Cite2Urn = imgUrn.addProperty("rights")
-    imgObj.propertyValue(rightsProp).toString
+    imgUrn.objectComponent match {
+      case "null" => "No image available"
+      case _  => {
+        debug("imgOpt is " + imgOpt)
+        debug("So get that as " + imgUrn )
+
+        val imgObj = repo.citableObject(imgUrn)
+        debug("And retrieve its object " + imgObj)
+
+        val rightsProp : Cite2Urn = imgUrn.addProperty("rights")
+        imgObj.propertyValue(rightsProp).toString
+      }
+    }
+
+
   }
 
   /** Select surface identifer from URN.
@@ -247,21 +256,47 @@ case class Facsimile (
 
   }
 
+  def imgNonNull(cobj: CiteObject): Boolean = {
+    cobj.propertyValue(cobj.urn.addProperty("image")) match {
+      case img: Cite2Urn => {
+        if (img.objectComponent == "null") { false} else {true}
+      }
+      case _ => false
+    }
+  }
+
   def bifPageMarkdown(bifolio: Vector[CiteObject], imgWidth: Int, prev: String, next: String) : String = {
 
     val rangeId = bifIdRange(bifolio)
     val yaml = s"---\nlayout: page\ntitle: ${rangeId}\n---\n\n"
-    val urn = s"Cite this object as `" + bifolio(0).urn + "-" + bifolio(1).urn.objectComponent + "`.  The full image is linked to a citation tool you can use to cite regions of the image."
+    val cite = bifolio.size match {
+      case 1 =>  s"Cite this object as `" + bifolio(0).urn + "`"
+      case 2 =>  s"Cite this object as `" + bifolio(0).urn + "-" + bifolio(1).urn.objectComponent + "`."
+    }
 
 
-    //val urn = s"Cite this object as `${cobj.urn}`.  The full image is linked to a citation tool you can use to cite regions of the image."
+
+    val hasImage : Boolean = imgNonNull(bifolio(0))
+
+    val urn = if (hasImage) {
+      cite +  " The full image is linked to a citation tool you can use to cite regions of the image."
+    } else {
+      cite
+    }
+
     val p = if (prev.isEmpty) { "-" } else { s"[${prev}](../${prev}/)"}
     val n = if (next.isEmpty ) { "-" } else { s"[${next}](../${next}/)"}
     val pn = s"previous: ${p} | next: ${n}"
-    val imgRights = "<p style=\"text-align: center; font-style: italic;\">" + rights(bifolio(0)) + "</p>"
+    val imgRights = if (hasImage ) {
+      "<p style=\"text-align: center; font-style: italic;\">" + rights(bifolio(0)) + "</p>"
+    } else { "" }
+
+    val imgLink = if (hasImage){ imageLink(bifolio(0), imgWidth) } else { "No image available." }
+
+
     //yaml + s"${cobj.label}\n\n${urn}\n\n${imageLink(cobj, imgWidth)} \n\n${imgRights}\n\n---\n\n" + pn
 
-    yaml + s"${rangeId}\n\n${urn}\n\n${imageLink(bifolio(0), imgWidth)} \n\n${imgRights}\n\n---\n\n" + pn
+    yaml + s"${rangeId}\n\n${urn}\n\n${imgLink} \n\n${imgRights}\n\n---\n\n" + pn
   }
 
 
@@ -269,14 +304,16 @@ case class Facsimile (
     val rangeLabel = verso.urn.objectComponent + "-" +  recto.urn.objectComponent
     val pg = "../" + rangeLabel + "/"
 
-    image(verso) match {
-      case Some(u) => {
-        val embeddedImg = imageMarkdown(u, w)
-
-        s"[![${pg}](${embeddedImg})${rangeLabel}](${pg})"
+    if (imgNonNull(verso)) {
+      image(verso) match {
+        case Some(u) => {
+          val embeddedImg = imageMarkdown(u, w)
+          s"[![${pg}](${embeddedImg})${rangeLabel}](${pg})"
+        }
+        case _ => s"[${rangeLabel}](${pg})" + " No image available."
       }
-
-      case _ => s"[${rangeLabel}](${pg})" + " No image available."
+    } else {
+      s"[${rangeLabel}](${pg})" + " No image available."
     }
   }
 
@@ -288,7 +325,8 @@ case class Facsimile (
       }
       case 1 => {
         warn("Singleton left over " + pr(0).urn)
-        thumbLink(pr(0), thumbWidth)
+        //thumbLink(pr(0), thumbWidth)
+        ""
       }
       case 2 => {
         bifThumbLink(pr(0), pr(1), thumbWidth)
@@ -311,10 +349,6 @@ case class Facsimile (
     val grouped = paired.sliding(6, 6).toVector
 
     val rows = grouped.map(row => row.map( pr => bifThumb(pr, thumbWidth)))
-
-
-    //val rows = grouped.map ( row => row.map(pg => thumbLink(pg, thumbWidth)))
-
     val mdRows = rows.map(row => "| " + row.mkString(" |"))
 
     val tableHdr = for (i <- 1 to columns) yield {
@@ -326,12 +360,7 @@ case class Facsimile (
 
   def bifTitlePage: String = {
     val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
-
-
     val pairIds = pages.sliding(2,2).toVector.map( pr => bifIdRange(pr))
-/*
-    val pgIds = pages.map(_.urn.objectComponent)
-    */
     val pageLinks = pairIds.map(bif => {
       "<option value=\"./" + bif + "/\">" + bif + "</option>"
     })

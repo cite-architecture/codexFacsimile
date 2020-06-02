@@ -17,7 +17,12 @@ class BifolioFacsimileSpec extends FlatSpec {
   val pages = repo.objectsForCollection(upsilonUrn)
   val facsimile = Facsimile(repo, upsilonUrn)
 
-  "A Facsimile"  should "write bifolio layouts" in pending
+  "A Facsimile"  should "write bifolio layouts" in {
+      val repo = CiteRepositorySource.fromFile("jvm/src/test/resources/e3allTiniest.cex")
+      val pages = repo.objectsForCollection(upsilonUrn)
+      val facsimile = Facsimile(repo, upsilonUrn)
+      facsimile.bifEdition("testbifout")
+  }
 
   it should "construct a ToC by bifolio spread" in {
     val repo = CiteRepositorySource.fromFile("jvm/src/test/resources/e3pagesTiny.cex")

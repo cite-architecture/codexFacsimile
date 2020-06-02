@@ -1,0 +1,50 @@
+#!datamodels
+Collection#Model#Label#Descriptio
+urn:cite2:hmt:e3pages.v1:#urn:cite2:cite:datamodels.v1:tbsmodel#Model of Escorial Y 1.1 codex#Escorial Monastery, codex Y 1.1, in the CITE model of a sequence of text-bearing surfaces
+
+#!citecollections
+URN#Description#Labelling property#Ordering property#License
+urn:cite2:hmt:e3pages.v1:#Escorial Y 1.1 manuscript#urn:cite2:hmt:e3pages.v1.label:#urn:cite2:hmt:e3pages.v1.sequence:#CC-attribution-share-alike
+
+#!citeproperties
+Property#Label#Type#Authority list
+urn:cite2:hmt:e3pages.v1.sequence:#Page sequence#Number#
+urn:cite2:hmt:e3pages.v1.urn:#URN#Cite2Urn#
+urn:cite2:hmt:e3pages.v1.rv:#Recto or Verso#String#recto,verso
+urn:cite2:hmt:e3pages.v1.label:#Label#String#
+urn:cite2:hmt:e3pages.v1.image:#TBS image#Cite2Urn#
+
+#!citedata
+sequence#image#urn#rv#label
+1#urn:cite2:hmt:e3bifolio.v1:E3_1v_2r#urn:cite2:hmt:e3pages.v1:1v#verso#Escorial Y 1.1, folio 1 verso
+2#urn:cite2:hmt:e3bifolio.v1:E3_1v_2r#urn:cite2:hmt:e3pages.v1:2r#recto#Escorial Y 1.1, folio 2 recto
+3#urn:cite2:hmt:e3bifolio.v1:E3_2v_3r#urn:cite2:hmt:e3pages.v1:2v#verso#Escorial Y 1.1, folio 2 verso
+4#urn:cite2:hmt:e3bifolio.v1:E3_2v_3r#urn:cite2:hmt:e3pages.v1:3r#recto#Escorial Y 1.1, folio 3 recto
+5#urn:cite2:hmt:e3bifolio.v1:E3_3v_4r#urn:cite2:hmt:e3pages.v1:3v#verso#Escorial Y 1.1, folio 3 verso
+6#urn:cite2:hmt:e3bifolio.v1:E3_3v_4r#urn:cite2:hmt:e3pages.v1:4r#recto#Escorial Y 1.1, folio 4 recto
+7#urn:cite2:hmt:e3bifolio.v1:E3_4v_5r#urn:cite2:hmt:e3pages.v1:4v#verso#Escorial Y 1.1, folio 4 verso
+8#urn:cite2:hmt:e3bifolio.v1:E3_4v_5r#urn:cite2:hmt:e3pages.v1:5r#recto#Escorial Y 1.1, folio 5 recto
+
+
+
+
+#!datamodels
+Collection#Model#Label#Description
+urn:cite2:hmt:e3bifolio.v1:#urn:cite2:cite:datamodels.v1:imagemodel#Model of citable images of bifolio spreads of the Escorial Y 1.1#Model of citable images of the Escorial Y 1.1 manuscript
+
+#!citecollections
+URN#Description#Labelling property#Ordering property#License
+urn:cite2:hmt:e3bifolio.v1:#Bifolio spreads of the Escorial Y 1.1 manuscript#urn:cite2:hmt:e3bifolio.v1.caption:##Composite images of bifolio spreads CC Attribution-Share-alike are licensed under the Creative Commons Non-Commerical, Attribution, Share-Alike, Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License, and are based on images (c) 2010, The University of Kentucky, Center for Visualization and Virtual Environments. Licensed under the Creative Commons Non-Commerical, Attribution, Share-Alike, Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License, with the kind cooperation and permission of the Real Monasterio de San Lorenzo de El Escoria, José Luis del Valle Merino, O.S.A., Director.
+
+#!citeproperties
+Property#Label#Type#Authority list
+urn:cite2:hmt:e3bifolio.v1.urn:#URN#Cite2Urn#
+urn:cite2:hmt:e3bifolio.v1.caption:#Caption#String#
+urn:cite2:hmt:e3bifolio.v1.rights:#Rights#String#
+
+#!citedata
+urn#caption#rights
+urn:cite2:hmt:e3bifolio.v1:E3_1v_2r#Escorial Υ 1.1, folio 1 verso and 2 recto#Creative Commons Non-Commerical, Attribution, Share-Alike, Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+urn:cite2:hmt:e3bifolio.v1:E3_2v_3r#Escorial Υ 1.1, folio 2 verso and 3 recto#Creative Commons Non-Commerical, Attribution, Share-Alike, Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+urn:cite2:hmt:e3bifolio.v1:E3_3v_4r#Escorial Υ 1.1, folio 3 verso and 4 recto#Creative Commons Non-Commerical, Attribution, Share-Alike, Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+urn:cite2:hmt:e3bifolio.v1:E3_4v_5r#Escorial Υ 1.1, folio 4 verso and 5 recto#Creative Commons Non-Commerical, Attribution, Share-Alike, Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License

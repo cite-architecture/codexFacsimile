@@ -201,6 +201,69 @@ case class Facsimile (
     }
   }
 
+  def bifIdRange(bifolio: Vector[CiteObject]) : String = {
+      bifolio.size match {
+        case 0 => {
+          warn("ERROR: empty page list")
+          ""
+        }
+        case 1 => {
+          bifolio(0).urn.objectComponent
+        }
+        case 2 => {
+          bifolio(0).urn.objectComponent + "-" + bifolio(1).urn.objectComponent
+        }
+        case _ => {
+          warn("ERROR: wrong number of pages in bifolio list: " + bifolio.size)
+          "ERROR-" + bifolio(0).urn.objectComponent
+        }
+      }
+  }
+
+  def bifEdition(dirName: String, imgWidth: Int = 800, thumbWidth: Int = 100, columns : Int = 6) : Unit = {
+    new java.io.PrintWriter(dirName + "/index.md" ){write(bifTitlePage);close;}
+    val tocDir = new java.io.File(dirName + "/toc").mkdirs
+    new java.io.PrintWriter(dirName + "/toc/index.md" ){write(bifToc(thumbWidth, columns));close;}
+
+    val pairs = pages.sliding(2,2).toVector
+
+
+    for ((pr,idx) <- pairs.zipWithIndex) {
+      val prev = if (idx == 0) { ""  } else {
+        bifIdRange(pairs(idx - 1))
+      }
+      val nxt = if (idx == (pairs.size -1)) {""} else {
+        bifIdRange(pairs(idx + 1))
+
+      }
+
+      val bifDir = new java.io.File(dirName + "/" +  bifIdRange(pr)).mkdirs
+      val fName = dirName + "/" + bifIdRange(pr) + "/index.md"
+      new java.io.PrintWriter(fName){
+        write(bifPageMarkdown(pr, imgWidth, prev, nxt));
+        close;
+      }
+    }
+
+  }
+
+  def bifPageMarkdown(bifolio: Vector[CiteObject], imgWidth: Int, prev: String, next: String) : String = {
+
+    val rangeId = bifIdRange(bifolio)
+    val yaml = s"---\nlayout: page\ntitle: ${rangeId}\n---\n\n"
+    val urn = s"Cite this object as `" + bifolio(0).urn + "-" + bifolio(1).urn.objectComponent + "`.  The full image is linked to a citation tool you can use to cite regions of the image."
+
+
+    //val urn = s"Cite this object as `${cobj.urn}`.  The full image is linked to a citation tool you can use to cite regions of the image."
+    val p = if (prev.isEmpty) { "-" } else { s"[${prev}](../${prev}/)"}
+    val n = if (next.isEmpty ) { "-" } else { s"[${next}](../${next}/)"}
+    val pn = s"previous: ${p} | next: ${n}"
+    val imgRights = "<p style=\"text-align: center; font-style: italic;\">" + rights(bifolio(0)) + "</p>"
+    //yaml + s"${cobj.label}\n\n${urn}\n\n${imageLink(cobj, imgWidth)} \n\n${imgRights}\n\n---\n\n" + pn
+
+    yaml + s"${rangeId}\n\n${urn}\n\n${imageLink(bifolio(0), imgWidth)} \n\n${imgRights}\n\n---\n\n" + pn
+  }
+
 
   def bifThumbLink(verso: CiteObject, recto: CiteObject, w: Int): String = {
     val rangeLabel = verso.urn.objectComponent + "-" +  recto.urn.objectComponent
@@ -259,6 +322,27 @@ case class Facsimile (
     }
 
     yaml + "Markdown for thumbnails\n\n" + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
+  }
+
+  def bifTitlePage: String = {
+    val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
+
+
+    val pairIds = pages.sliding(2,2).toVector.map( pr => bifIdRange(pr))
+/*
+    val pgIds = pages.map(_.urn.objectComponent)
+    */
+    val pageLinks = pairIds.map(bif => {
+      "<option value=\"./" + bif + "/\">" + bif + "</option>"
+    })
+
+
+    val options = """<option select="selected">-</option>""" + pageLinks
+
+    val selectIntro = """<select id="selectbox" name="" onchange="javascript:location.href = this.value;">"""
+    val select = selectIntro + options + "</select>"
+
+    yaml + "\n\nSee a [visual table of contents](./toc/)" + "\n\nView bifolio spread:\n\n" + select
   }
 
 }

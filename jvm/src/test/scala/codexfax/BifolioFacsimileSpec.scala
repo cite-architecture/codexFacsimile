@@ -32,4 +32,11 @@ class BifolioFacsimileSpec extends FlatSpec {
     println(toc)
   }
 
+  it should "handle all of Upsilon 1.1" in {
+    val repo = CiteRepositorySource.fromFile("jvm/src/test/resources/e3-all.cex")
+    val pages = repo.objectsForCollection(upsilonUrn)
+    val facsimile = Facsimile(repo, upsilonUrn)
+    facsimile.bifEdition("testbifout")
+  }
+
 }

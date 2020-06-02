@@ -4,10 +4,13 @@ import org.scalatest.FlatSpec
 import edu.holycross.shot.cite._
 import edu.holycross.shot.citeobj._
 
+//import wvlet.log._
+//import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 class FacsimileSpec extends FlatSpec {
+  //Logger.setDefaultLogLevel(LogLevel.DEBUG)
 
-  val repo = CiteRepositorySource.fromFile("shared/src/test/resources/b86-all.cex")
+  val repo = CiteRepositorySource.fromFile("jvm/src/test/resources/b86-all.cex")
   val burney86urn = Cite2Urn("urn:cite2:citebl:burney86pages.v1:")
   //val pages = repo.objectsForCollection(burney86urn)
 
@@ -32,7 +35,11 @@ class FacsimileSpec extends FlatSpec {
 
   it should "format a linked image for a page" in {
     val record = facsimile.pages(0)
-    println("IMAGE: " + facsimile.imageLink(record, 500))
+    val actual = facsimile.imageLink(record, 500)
+    val expected = "[![1r](http://www.homermultitext.org/iipsrv?IIIF=/project/homer/pyramidal/deepzoom/citebl/burney86imgs/v1/burney_ms_86_f001r.tif/full/500,/0/default.jpg)](http://www.homermultitext.org/ict2/?urn=urn:cite2:citebl:burney86imgs.v1:burney_ms_86_f001r)"
+
+    assert(actual == expected)
+
   }
 
   it should "return an appropriate message if no image exists for a page" in pending
@@ -46,6 +53,10 @@ class FacsimileSpec extends FlatSpec {
 
   it should "write a complete edition to a specified directory" in {
     facsimile.edition("testout")
+  }
+
+  it should "write bifolio layouts" in {
+
   }
 
 }

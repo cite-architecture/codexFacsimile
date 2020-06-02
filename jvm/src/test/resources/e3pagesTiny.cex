@@ -1,0 +1,49 @@
+#!datamodels
+Collection#Model#Label#Descriptio
+urn:cite2:hmt:e3pages.v1:#urn:cite2:cite:datamodels.v1:tbsmodel#Model of Escorial Y 1.1 codex#Escorial Monastery, codex Y 1.1, in the CITE model of a sequence of text-bearing surfaces
+
+#!citecollections
+URN#Description#Labelling property#Ordering property#License
+urn:cite2:hmt:e3pages.v1:#Escorial Y 1.1 manuscript#urn:cite2:hmt:e3pages.v1.label:#urn:cite2:hmt:e3pages.v1.sequence:#CC-attribution-share-alike
+
+#!citeproperties
+Property#Label#Type#Authority list
+urn:cite2:hmt:e3pages.v1.sequence:#Page sequence#Number#
+urn:cite2:hmt:e3pages.v1.urn:#URN#Cite2Urn#
+urn:cite2:hmt:e3pages.v1.rv:#Recto or Verso#String#recto,verso
+urn:cite2:hmt:e3pages.v1.label:#Label#String#
+urn:cite2:hmt:e3pages.v1.image:#TBS image#Cite2Urn#
+
+#!citedata
+sequence#image#urn#rv#label
+1#urn:cite2:hmt:e3bifolio.v1:E3_1v_2r#urn:cite2:hmt:e3pages.v1:1v#verso#Escorial Y 1.1, folio 1 verso
+2#urn:cite2:hmt:e3bifolio.v1:E3_1v_2r#urn:cite2:hmt:e3pages.v1:2r#recto#Escorial Y 1.1, folio 2 recto
+3#urn:cite2:hmt:e3bifolio.v1:E3_2v_3r#urn:cite2:hmt:e3pages.v1:2v#verso#Escorial Y 1.1, folio 2 verso
+4#urn:cite2:hmt:e3bifolio.v1:E3_2v_3r#urn:cite2:hmt:e3pages.v1:3r#recto#Escorial Y 1.1, folio 3 recto
+5#urn:cite2:hmt:e3bifolio.v1:E3_3v_4r#urn:cite2:hmt:e3pages.v1:3v#verso#Escorial Y 1.1, folio 3 verso
+6#urn:cite2:hmt:e3bifolio.v1:E3_3v_4r#urn:cite2:hmt:e3pages.v1:4r#recto#Escorial Y 1.1, folio 4 recto
+7#urn:cite2:hmt:e3bifolio.v1:E3_4v_5r#urn:cite2:hmt:e3pages.v1:4v#verso#Escorial Y 1.1, folio 4 verso
+8#urn:cite2:hmt:e3bifolio.v1:E3_4v_5r#urn:cite2:hmt:e3pages.v1:5r#recto#Escorial Y 1.1, folio 5 recto
+9#urn:cite2:hmt:e3bifolio.v1:E3_5v_6r#urn:cite2:hmt:e3pages.v1:5v#verso#Escorial Y 1.1, folio 5 verso
+10#urn:cite2:hmt:e3bifolio.v1:E3_5v_6r#urn:cite2:hmt:e3pages.v1:6r#recto#Escorial Y 1.1, folio 6 recto
+11#urn:cite2:hmt:e3bifolio.v1:E3_6v_7r#urn:cite2:hmt:e3pages.v1:6v#verso#Escorial Y 1.1, folio 6 verso
+12#urn:cite2:hmt:e3bifolio.v1:E3_6v_7r#urn:cite2:hmt:e3pages.v1:7r#recto#Escorial Y 1.1, folio 7 recto
+13#urn:cite2:hmt:e3bifolio.v1:E3_7v_8r#urn:cite2:hmt:e3pages.v1:7v#verso#Escorial Y 1.1, folio 7 verso
+14#urn:cite2:hmt:e3bifolio.v1:E3_7v_8r#urn:cite2:hmt:e3pages.v1:8r#recto#Escorial Y 1.1, folio 8 recto
+15#urn:cite2:hmt:e3bifolio.v1:E3_8v_9r#urn:cite2:hmt:e3pages.v1:8v#verso#Escorial Y 1.1, folio 8 verso
+16#urn:cite2:hmt:e3bifolio.v1:E3_8v_9r#urn:cite2:hmt:e3pages.v1:9r#recto#Escorial Y 1.1, folio 9 recto
+17#urn:cite2:hmt:e3bifolio.v1:E3_9v_10r#urn:cite2:hmt:e3pages.v1:9v#verso#Escorial Y 1.1, folio 9 verso
+18#urn:cite2:hmt:e3bifolio.v1:E3_9v_10r#urn:cite2:hmt:e3pages.v1:10r#recto#Escorial Y 1.1, folio 10 recto
+19#urn:cite2:hmt:e3bifolio.v1:E3_10v_11r#urn:cite2:hmt:e3pages.v1:10v#verso#Escorial Y 1.1, folio 10 verso
+20#urn:cite2:hmt:e3bifolio.v1:E3_10v_11r#urn:cite2:hmt:e3pages.v1:11r#recto#Escorial Y 1.1, folio 11 recto
+21#urn:cite2:hmt:e3bifolio.v1:E3_11v_12r#urn:cite2:hmt:e3pages.v1:11v#verso#Escorial Y 1.1, folio 11 verso
+22#urn:cite2:hmt:e3bifolio.v1:E3_11v_12r#urn:cite2:hmt:e3pages.v1:12r#recto#Escorial Y 1.1, folio 12 recto
+23#urn:cite2:hmt:e3bifolio.v1:E3_12v_13r#urn:cite2:hmt:e3pages.v1:12v#verso#Escorial Y 1.1, folio 12 verso
+24#urn:cite2:hmt:e3bifolio.v1:E3_12v_13r#urn:cite2:hmt:e3pages.v1:13r#recto#Escorial Y 1.1, folio 13 recto
+25#urn:cite2:hmt:e3bifolio.v1:E3_13v_14r#urn:cite2:hmt:e3pages.v1:13v#verso#Escorial Y 1.1, folio 13 verso
+26#urn:cite2:hmt:e3bifolio.v1:E3_13v_14r#urn:cite2:hmt:e3pages.v1:14r#recto#Escorial Y 1.1, folio 14 recto
+27#urn:cite2:hmt:e3bifolio.v1:E3_14v_15r#urn:cite2:hmt:e3pages.v1:14v#verso#Escorial Y 1.1, folio 14 verso
+28#urn:cite2:hmt:e3bifolio.v1:E3_14v_15r#urn:cite2:hmt:e3pages.v1:15r#recto#Escorial Y 1.1, folio 15 recto
+29#urn:cite2:hmt:e3bifolio.v1:E3_15v_16r#urn:cite2:hmt:e3pages.v1:15v#verso#Escorial Y 1.1, folio 15 verso
+30#urn:cite2:hmt:e3bifolio.v1:E3_15v_16r#urn:cite2:hmt:e3pages.v1:16r#recto#Escorial Y 1.1, folio 16 recto
+31#urn:cite2:hmt:e3bifolio.v1:E3_16v_17r#urn:cite2:hmt:e3pages.v1:16v#verso#Escorial Y 1.1, folio 16 verso

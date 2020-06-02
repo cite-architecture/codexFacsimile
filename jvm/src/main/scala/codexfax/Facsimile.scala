@@ -8,7 +8,7 @@ import java.io.PrintWriter
 import java.io.File
 
 import wvlet.log._
-import wvlet.log.LogFormatter.SourceCodeLogFormatter
+//import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 
 /** Physical facsimile for a sequence of pages implementing
@@ -164,16 +164,21 @@ case class Facsimile (
   * @param cobj Page to display image for.
   * @param w Width in pixels to display image.
   */
-  def imageLink(cobj: CiteObject, w: Int): String = {
+  def imageLink(cobj: CiteObject,  w: Int, label: String = ""): String = {
+    val formattedLabel : String = if (label.isEmpty) {
+      cobj.urn.objectComponent
+    } else {
+      label
+    }
     image(cobj) match {
 
       case Some(u) => {
         val embeddedImg = imageMarkdown(u, w)
         val zoom = ictBase + "urn=" + u
-        s"[![${u.objectComponent}](${embeddedImg})](${zoom})"
+        s"[![${formattedLabel}](${embeddedImg})](${zoom})"
       }
 
-      case _ => cobj.label + " No image available."
+      case _ => formattedLabel + " No image available."
     }
   }
 
@@ -194,6 +199,66 @@ case class Facsimile (
       val fName = dirName + "/" + pageId(pg) + "/index.md"
       new java.io.PrintWriter(fName){ write(pageMarkdown(pg, imgWidth, prev, nxt)); close; }
     }
+  }
+
+
+  def bifThumbLink(verso: CiteObject, recto: CiteObject, w: Int): String = {
+    val rangeLabel = verso.urn.objectComponent + "-" +  recto.urn.objectComponent
+    val pg = "../" + rangeLabel + "/"
+
+    image(verso) match {
+      case Some(u) => {
+        val embeddedImg = imageMarkdown(u, w)
+
+        s"[![${pg}](${embeddedImg})${rangeLabel}](${pg})"
+      }
+
+      case _ => s"[${rangeLabel}](${pg})" + " No image available."
+    }
+  }
+
+  def bifThumb(pr: Vector[CiteObject], thumbWidth: Int = 100) : String = {
+    pr.size match {
+      case 0 => {
+        warn("Empty pairing!")
+        ""
+      }
+      case 1 => {
+        warn("Singleton left over " + pr(0).urn)
+        thumbLink(pr(0), thumbWidth)
+      }
+      case 2 => {
+        bifThumbLink(pr(0), pr(1), thumbWidth)
+      }
+      case _ => {
+        warn("Very odd sized pair: " + pr.size + " for " + pr.map(_.urn).mkString(", "))
+        warn("Creating thumbnail for first image")
+        thumbLink(pr(0), thumbWidth)
+      }
+    }
+  }
+
+  def bifToc(thumbWidth: Int = 100, columns : Int = 6): String = {
+    Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    val yaml = s"---\nlayout: page\ntitle: ${label}\n---\n\n"
+
+    val paired = pages.sliding(2,2).toVector
+    debug(s"${paired.size} pairs from ${pages.size} pages")
+
+    val grouped = paired.sliding(6, 6).toVector
+
+    val rows = grouped.map(row => row.map( pr => bifThumb(pr, thumbWidth)))
+
+
+    //val rows = grouped.map ( row => row.map(pg => thumbLink(pg, thumbWidth)))
+
+    val mdRows = rows.map(row => "| " + row.mkString(" |"))
+
+    val tableHdr = for (i <- 1 to columns) yield {
+      "| ------------- "
+    }
+
+    yaml + "Markdown for thumbnails\n\n" + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
   }
 
 }

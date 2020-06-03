@@ -137,7 +137,7 @@ case class Facsimile (
       "| ------------- "
     }
 
-    yaml + "Markdown for thumbnails\n\n" + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
+    yaml + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
   }
 
   /** Format a single page with facsimile view in markdown.
@@ -355,7 +355,7 @@ case class Facsimile (
       "| ------------- "
     }
 
-    yaml + "Markdown for thumbnails\n\n" + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
+    yaml + tableHdr.mkString + " |\n" + mdRows.mkString(" |\n") + " |\n\n"
   }
 
   def bifTitlePage: String = {

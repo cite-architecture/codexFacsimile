@@ -13,9 +13,7 @@ class BifolioFacsimileSpec extends FlatSpec {
 
   val upsilonUrn = Cite2Urn("urn:cite2:hmt:e3pages.v1:")
 
-  val repo = CiteRepositorySource.fromFile("jvm/src/test/resources/e3pages.cex")
-  val pages = repo.objectsForCollection(upsilonUrn)
-  val facsimile = Facsimile(repo, upsilonUrn)
+
 
   "A Facsimile"  should "write bifolio layouts" in {
       val repo = CiteRepositorySource.fromFile("jvm/src/test/resources/e3allTiniest.cex")

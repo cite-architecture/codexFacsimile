@@ -1,5 +1,7 @@
 # Codex facsimile library: release notes
 
+**2.1.0**: adds support for building facsimiles in bifolio spreads.
+
 **2.0.2**: fixes a bug in layout of visual table of contents.
 
 **2.0.1**: fixes a markdown formatting error.

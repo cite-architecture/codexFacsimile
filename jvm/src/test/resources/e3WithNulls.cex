@@ -16,23 +16,8 @@ urn:cite2:hmt:e3pages.v1.image:#TBS image#Cite2Urn#
 
 #!citedata
 sequence#image#urn#rv#label
-1#urn:cite2:hmt:e3bifolio.v1:E3_1v_2r#urn:cite2:hmt:e3pages.v1:1v#verso#Escorial Y 1.1, folio 1 verso
-2#urn:cite2:hmt:e3bifolio.v1:E3_1v_2r#urn:cite2:hmt:e3pages.v1:2r#recto#Escorial Y 1.1, folio 2 recto
-3#urn:cite2:hmt:e3bifolio.v1:E3_2v_3r#urn:cite2:hmt:e3pages.v1:2v#verso#Escorial Y 1.1, folio 2 verso
-4#urn:cite2:hmt:e3bifolio.v1:E3_2v_3r#urn:cite2:hmt:e3pages.v1:3r#recto#Escorial Y 1.1, folio 3 recto
-5#urn:cite2:hmt:e3bifolio.v1:E3_3v_4r#urn:cite2:hmt:e3pages.v1:3v#verso#Escorial Y 1.1, folio 3 verso
-6#urn:cite2:hmt:e3bifolio.v1:E3_3v_4r#urn:cite2:hmt:e3pages.v1:4r#recto#Escorial Y 1.1, folio 4 recto
-7#urn:cite2:hmt:e3bifolio.v1:E3_4v_5r#urn:cite2:hmt:e3pages.v1:4v#verso#Escorial Y 1.1, folio 4 verso
-8#urn:cite2:hmt:e3bifolio.v1:E3_4v_5r#urn:cite2:hmt:e3pages.v1:5r#recto#Escorial Y 1.1, folio 5 recto
-315#urn:cite2:hmt:e3bifolio.v1:E3_152v_153r#urn:cite2:hmt:e3pages.v1:152v#verso#Escorial Y 1.1, folio 152 verso
-316#urn:cite2:hmt:e3bifolio.v1:E3_152v_153r#urn:cite2:hmt:e3pages.v1:153r#recto#Escorial Y 1.1, folio 153 recto
 317#urn:cite2:hmt:e3bifolio.v1:null#urn:cite2:hmt:e3pages.v1:154v#verso#Escorial Y 1.1, folio 154 verso
 318#urn:cite2:hmt:e3bifolio.v1:null#urn:cite2:hmt:e3pages.v1:155r#recto#Escorial Y 1.1, folio 155 recto
-453#urn:cite2:hmt:e3bifolio.v1:null#urn:cite2:hmt:e3pages.v1:222v#verso#Escorial Y 1.1, folio 222 verso
-454#urn:cite2:hmt:e3bifolio.v1:null#urn:cite2:hmt:e3pages.v1:223r#recto#Escorial Y 1.1, folio 223 recto
-457#urn:cite2:hmt:e3bifolio.v1:E3_223v_224r#urn:cite2:hmt:e3pages.v1:223v#verso#Escorial Y 1.1, folio 223 verso
-458#urn:cite2:hmt:e3bifolio.v1:E3_223v_224r#urn:cite2:hmt:e3pages.v1:224r#recto#Escorial Y 1.1, folio 224 recto
-
 
 #!datamodels
 Collection#Model#Label#Description
